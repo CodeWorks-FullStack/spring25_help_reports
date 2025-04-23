@@ -8,7 +8,7 @@ const account = computed(() => AppState.account)
 
 
 <template>
-  <aside class="px-2 pt-4 baloo-font">
+  <aside class="baloo-font">
     <div class="bg-success text-light text-center fs-1">
       <p class="fw-bold">HELP</p>
       <span class="mdi mdi-rodent display-1"></span>
