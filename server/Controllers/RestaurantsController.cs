@@ -30,10 +30,18 @@ public class RestaurantsController : ControllerBase, IController<Restaurant>
       return BadRequest(exception.Message);
     }
   }
-
+  [HttpGet]
   public ActionResult<List<Restaurant>> GetAll()
   {
-    throw new NotImplementedException();
+    try
+    {
+      List<Restaurant> restaurants = _restaurantsService.GetAll();
+      return Ok(restaurants);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
   }
 
   public ActionResult<Restaurant> GetById(int id)

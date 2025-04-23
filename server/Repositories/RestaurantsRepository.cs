@@ -12,7 +12,21 @@ public class RestaurantsRepository : IRepository<Restaurant>
 
   public List<Restaurant> GetAll()
   {
-    throw new NotImplementedException();
+    string sql = @"
+    SELECT
+    restaurants.*,
+    accounts.*
+    FROM restaurants
+    INNER JOIN accounts ON accounts.id = restaurants.creator_id;";
+
+    List<Restaurant> restaurants = _db.Query(sql, (Restaurant restaurant, Profile account) =>
+    {
+      restaurant.Owner = account;
+      return restaurant;
+    }).ToList();
+
+
+    return restaurants;
   }
 
   public Restaurant Create(Restaurant data)
