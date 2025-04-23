@@ -4,6 +4,11 @@ import { AppState } from "@/AppState.js"
 import { Restaurant } from "@/models/Restaurant.js"
 
 class RestaurantsService {
+  async getRestaurantById(restaurantId) {
+    const response = await api.get(`api/restaurants/${restaurantId}`)
+    logger.log('GOT RESTAURANT', response.data)
+    AppState.activeRestaurant = new Restaurant(response.data)
+  }
   async getAllRestaurants() {
     const response = await api.get('api/restaurants')
     logger.log('GOT RESTAURANTS', response.data)

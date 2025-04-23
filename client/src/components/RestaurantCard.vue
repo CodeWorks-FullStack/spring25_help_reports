@@ -10,7 +10,6 @@ defineProps({
 <template>
   <RouterLink :to="{ name: 'Restaurant Details', params: { restaurantId: restaurant.id } }"
     :title="`Go to the ${restaurant.name} page`">
-
     <div class="shadow-lg">
       <img :src="restaurant.imgUrl" :alt="`A picture of the ${restaurant.name} restaurant`"
         class="w-100 restaurant-img">
