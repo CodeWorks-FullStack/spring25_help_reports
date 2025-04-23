@@ -9,10 +9,12 @@ const account = computed(() => AppState.account)
 
 <template>
   <aside class="baloo-font">
-    <div class="bg-success text-light text-center fs-1">
-      <p class="fw-bold">HELP</p>
-      <span class="mdi mdi-rodent display-1"></span>
-    </div>
+    <RouterLink :to="{ name: 'Home' }" title="Go to the home page">
+      <div class="bg-success text-light text-center fs-1">
+        <p class="fw-bold">HELP</p>
+        <span class="mdi mdi-rodent display-1"></span>
+      </div>
+    </RouterLink>
     <p class="fs-3 text-center text-success fw-bold">food reports</p>
     <button class="btn btn-success w-100 fw-bold fs-3 rounded-0">Report!</button>
     <div class="rounded-top bg-success-subtle">
