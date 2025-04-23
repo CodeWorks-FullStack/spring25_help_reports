@@ -4,7 +4,7 @@ namespace help.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class RestaurantsController : ControllerBase, IController<Restaurant>
+public class RestaurantsController : ControllerBase
 {
   public RestaurantsController(RestaurantsService restaurantsService, Auth0Provider auth0Provider)
   {
@@ -58,13 +58,39 @@ public class RestaurantsController : ControllerBase, IController<Restaurant>
     }
   }
 
-  public Task<ActionResult<Restaurant>> Update(int id, [FromBody] Restaurant updateTData)
+  [Authorize]
+  [HttpPut("{restaurantId}")]
+  public async Task<ActionResult<Restaurant>> Update(int restaurantId, [FromBody] Restaurant restaurantUpdateData)
   {
-    throw new NotImplementedException();
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      Restaurant restaurant = _restaurantsService.Update(restaurantId, userInfo, restaurantUpdateData);
+      return Ok(restaurant);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
   }
-
-  public Task<ActionResult<string>> Delete(int id)
+  [Authorize]
+  [HttpDelete("{restaurantId}")]
+  public async Task<ActionResult<string>> Delete(int restaurantId)
   {
-    throw new NotImplementedException();
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      string message = _restaurantsService.Delete(restaurantId, userInfo);
+      return Ok(message);
+    }
+    catch (Exception exception)
+    {
+      // if (exception.Message.Contains("ANOTHER USER'S"))
+      // {
+      //   return Forbid();
+      // }
+
+      return BadRequest(exception.Message);
+    }
   }
 }

@@ -71,13 +71,34 @@ public class RestaurantsRepository : IRepository<Restaurant>
     return foundRestaurant;
   }
 
-  public void Update(Restaurant data)
+  public void Update(Restaurant updateData)
   {
-    throw new NotImplementedException();
+    string sql = @"
+    UPDATE restaurants
+    SET
+    name = @Name,
+    description = @Description,
+    is_shutdown = @IsShutdown
+    WHERE id = @Id LIMIT 1;";
+
+    int rowsAffected = _db.Execute(sql, updateData);
+
+    if (rowsAffected != 1)
+    {
+      throw new Exception(rowsAffected + " ROWS WERE UPDATED AND THAT IS NOT GOOD");
+    }
   }
 
   public void Delete(int id)
   {
-    throw new NotImplementedException();
+    string sql = "DELETE FROM restaurants WHERE id = @id LIMIT 1;";
+
+    int rowsAffected = _db.Execute(sql, new { id });
+
+
+    if (rowsAffected != 1)
+    {
+      throw new Exception(rowsAffected + " ROWS WERE DELETED AND THAT IS NOT GOOD");
+    }
   }
 }
