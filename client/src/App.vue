@@ -1,22 +1,22 @@
 <script setup>
-import Navbar from './components/Navbar.vue';
 import { RouterView } from 'vue-router';
+import SideBar from './components/SideBar.vue';
 
 </script>
 
 <template>
-  <header>
-    <Navbar />
-  </header>
   <main>
-    <RouterView/>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2">
+          <SideBar />
+        </div>
+        <div class="col-md-10">
+          <RouterView />
+        </div>
+      </div>
+    </div>
   </main>
-  <footer class=" text-center">
-    Made with <i class="mdi mdi-heart text-pink"></i> by CodeWorks
-  </footer>
 </template>
 
-<style lang="scss">
-
-
-</style>
+<style lang="scss"></style>

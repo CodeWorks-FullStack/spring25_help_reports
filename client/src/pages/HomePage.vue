@@ -1,8 +1,10 @@
 <script setup>
-import Example from '@/components/Example.vue';
+import { AppState } from '@/AppState.js';
 import { restaurantsService } from '@/services/RestaurantsService.js';
 import { Pop } from '@/utils/Pop.js';
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
+
+const restaurants = computed(() => AppState.restaurants)
 
 onMounted(() => {
   getAllRestaurants()
@@ -19,7 +21,7 @@ async function getAllRestaurants() {
 </script>
 
 <template>
-  <Example />
+  <div class="container"></div>
 </template>
 
 <style scoped lang="scss"></style>
