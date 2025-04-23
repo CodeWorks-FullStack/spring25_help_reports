@@ -22,7 +22,7 @@ public class RestaurantsController : ControllerBase, IController<Restaurant>
     {
       Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
       restaurantData.CreatorId = userInfo.Id;
-      Restaurant restaurant = _restaurantsService.CreateRestaurant(restaurantData);
+      Restaurant restaurant = _restaurantsService.Create(restaurantData);
       return Ok(restaurant);
     }
     catch (Exception exception)
@@ -44,9 +44,18 @@ public class RestaurantsController : ControllerBase, IController<Restaurant>
     }
   }
 
-  public ActionResult<Restaurant> GetById(int id)
+  [HttpGet("{restaurantId}")]
+  public ActionResult<Restaurant> GetById(int restaurantId)
   {
-    throw new NotImplementedException();
+    try
+    {
+      Restaurant restaurant = _restaurantsService.GetById(restaurantId);
+      return Ok(restaurant);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
   }
 
   public Task<ActionResult<Restaurant>> Update(int id, [FromBody] Restaurant updateTData)
