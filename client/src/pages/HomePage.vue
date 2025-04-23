@@ -22,7 +22,7 @@ async function getAllRestaurants() {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
       <div v-for="restaurant in restaurants" :key="restaurant.id" class="col-md-4">
         <RestaurantCard :restaurant="restaurant" />

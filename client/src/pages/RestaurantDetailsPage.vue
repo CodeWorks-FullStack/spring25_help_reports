@@ -19,7 +19,7 @@ async function getRestaurantById() {
   try {
     await restaurantsService.getRestaurantById(route.params.restaurantId)
   } catch (error) {
-    Pop.error(error, "Ain't no restaurant here")
+    Pop.error(error, "Ain't no restaurant here, pal")
     router.push({ name: 'Home' })
   }
 }
@@ -27,7 +27,7 @@ async function getRestaurantById() {
 
 
 <template>
-  <div v-if="restaurant" class="container">
+  <div v-if="restaurant" class="container-fluid">
     <div class="row">
       <div class="col-12">
         <div class="d-flex justify-content-between">
@@ -68,7 +68,7 @@ async function getRestaurantById() {
       </div>
     </div>
   </div>
-  <div v-else class="container">
+  <div v-else class="container-fluid">
     <div class="row">
       <div class="col-12">
         <div class="text-green">

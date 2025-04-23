@@ -1,7 +1,6 @@
 using help.Interfaces;
 
 namespace help.Repositories;
-
 public class RestaurantsRepository : IRepository<Restaurant>
 {
   public RestaurantsRepository(IDbConnection db)
@@ -17,7 +16,8 @@ public class RestaurantsRepository : IRepository<Restaurant>
     restaurants.*,
     accounts.*
     FROM restaurants
-    INNER JOIN accounts ON accounts.id = restaurants.creator_id;";
+    INNER JOIN accounts ON accounts.id = restaurants.creator_id
+    ORDER BY restaurants.created_at ASC;";
 
     List<Restaurant> restaurants = _db.Query(sql, (Restaurant restaurant, Profile account) =>
     {
