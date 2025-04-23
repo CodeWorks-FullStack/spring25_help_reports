@@ -30,12 +30,16 @@ public class RestaurantsController : ControllerBase
       return BadRequest(exception.Message);
     }
   }
+
+  // NOTE not an authorized route
   [HttpGet]
-  public ActionResult<List<Restaurant>> GetAll()
+  public async Task<ActionResult<List<Restaurant>>> GetAll()
   {
     try
     {
-      List<Restaurant> restaurants = _restaurantsService.GetAll();
+      // NOTE you can still check to see who is logged in without authorizing the route
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      List<Restaurant> restaurants = _restaurantsService.GetAll(userInfo);
       return Ok(restaurants);
     }
     catch (Exception exception)
@@ -44,12 +48,15 @@ public class RestaurantsController : ControllerBase
     }
   }
 
+  // NOTE not an authorized route
   [HttpGet("{restaurantId}")]
-  public ActionResult<Restaurant> GetById(int restaurantId)
+  public async Task<ActionResult<Restaurant>> GetById(int restaurantId)
   {
     try
     {
-      Restaurant restaurant = _restaurantsService.GetById(restaurantId);
+      // NOTE you can still check to see who is logged in without authorizing the route
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      Restaurant restaurant = _restaurantsService.GetById(restaurantId, userInfo);
       return Ok(restaurant);
     }
     catch (Exception exception)

@@ -19,19 +19,40 @@ public class RestaurantsService
     return restaurant;
   }
 
-  internal List<Restaurant> GetAll()
+  private List<Restaurant> GetAll()
   {
     List<Restaurant> restaurants = _repository.GetAll();
     return restaurants;
   }
 
-  internal Restaurant GetById(int restaurantId)
+  internal List<Restaurant> GetAll(Account userInfo)
+  {
+    List<Restaurant> restaurants = GetAll();
+    // NOTE only give restaurants that are not shutdown OR I am the owner of
+    return restaurants.FindAll(restaurant => restaurant.IsShutdown == false || restaurant.CreatorId == userInfo?.Id);
+  }
+
+  private Restaurant GetById(int restaurantId)
   {
     Restaurant restaurant = _repository.GetById(restaurantId);
 
     if (restaurant == null)
     {
       throw new Exception("Invalid id: " + restaurantId);
+    }
+
+    return restaurant;
+  }
+
+  internal Restaurant GetById(int restaurantId, Account userInfo)
+  {
+    // NOTE overloads can still call each other
+    Restaurant restaurant = GetById(restaurantId);
+
+    // NOTE userInfo will be null here if you are not logged in! Make sure your use a null check OR elvis operator
+    if (restaurant.IsShutdown == true && restaurant.CreatorId != userInfo?.Id)
+    {
+      throw new Exception($"Invalid id: {restaurantId} 😉");
     }
 
     return restaurant;
@@ -68,4 +89,6 @@ public class RestaurantsService
 
     return restaurant.Name + " has been deleted, big dawg!";
   }
+
+
 }
