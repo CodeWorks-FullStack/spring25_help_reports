@@ -22,10 +22,20 @@ public class RestaurantsRepository : IRepository<Restaurant>
     restaurants(name, description, img_url, creator_id)
     VALUES(@Name, @Description, @ImgUrl, @CreatorId);
     
-    SELECT * FROM restaurants WHERE id = LAST_INSERT_ID();";
+    SELECT
+    restaurants.*,
+    accounts.*
+    FROM restaurants
+    INNER JOIN accounts ON accounts.id = restaurants.creator_id
+    WHERE restaurants.id = LAST_INSERT_ID();";
 
-    Restaurant restaurant = _db.Query<Restaurant>(sql, data).SingleOrDefault();
-    return restaurant;
+    Restaurant createdRestaurant = _db.Query(sql, (Restaurant restaurant, Profile account) =>
+    {
+      restaurant.Owner = account;
+      return restaurant;
+    }, data).SingleOrDefault();
+
+    return createdRestaurant;
   }
 
   public Restaurant GetById(int id)
