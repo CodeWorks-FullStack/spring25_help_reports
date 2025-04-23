@@ -5,6 +5,7 @@ import { Restaurant } from "@/models/Restaurant.js"
 
 class RestaurantsService {
   async getRestaurantById(restaurantId) {
+    AppState.activeRestaurant = null
     const response = await api.get(`api/restaurants/${restaurantId}`)
     logger.log('GOT RESTAURANT', response.data)
     AppState.activeRestaurant = new Restaurant(response.data)

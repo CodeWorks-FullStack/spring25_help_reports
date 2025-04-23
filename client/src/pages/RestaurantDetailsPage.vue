@@ -6,6 +6,7 @@ import { computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 const restaurant = computed(() => AppState.activeRestaurant)
+const account = computed(() => AppState.account)
 
 const route = useRoute()
 
@@ -29,7 +30,7 @@ async function getRestaurantById() {
       <div class="col-12">
         <div class="d-flex justify-content-between">
           <h1 class="text-green baloo-font fw-bold">{{ restaurant.name }}</h1>
-          <div class="bg-danger fs-1 text-light px-3">
+          <div v-if="restaurant.isShutdown" class="bg-danger fs-1 text-light px-3">
             <span class="mdi mdi-close-circle-outline"></span>
             <span>CURRENTLY SHUTDOWN</span>
           </div>
@@ -49,10 +50,10 @@ async function getRestaurantById() {
                   <span><b>0</b> reports</span>
                 </div>
               </div>
-              <div class="d-flex gap-2">
+              <div v-if="restaurant.creatorId == account?.id" class="d-flex gap-2">
                 <button class="btn btn-success fs-5">
-                  <span class="mdi mdi-door-open"></span>
-                  <span>Re-Open</span>
+                  <span class="mdi" :class="restaurant.isShutdown ? 'mdi-door-open' : 'mdi-door-closed-cancel'"></span>
+                  <span>{{ restaurant.isShutdown ? 'Re-Open' : 'Shutdown' }}</span>
                 </button>
                 <button class="btn btn-danger fs-5">
                   <span class="mdi mdi-delete-forever"></span>
