@@ -3,12 +3,13 @@ import { AppState } from '@/AppState.js';
 import { restaurantsService } from '@/services/RestaurantsService.js';
 import { Pop } from '@/utils/Pop.js';
 import { computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const restaurant = computed(() => AppState.activeRestaurant)
 const account = computed(() => AppState.account)
 
 const route = useRoute()
+const router = useRouter()
 
 onMounted(() => {
   getRestaurantById()
@@ -18,7 +19,8 @@ async function getRestaurantById() {
   try {
     await restaurantsService.getRestaurantById(route.params.restaurantId)
   } catch (error) {
-    Pop.error(error)
+    Pop.error(error, "Ain't no restaurant here")
+    router.push({ name: 'Home' })
   }
 }
 </script>
