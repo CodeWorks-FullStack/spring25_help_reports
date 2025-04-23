@@ -19,3 +19,5 @@ CREATE TABLE restaurants(
   creator_id VARCHAR(255) NOT NULL,
   FOREIGN KEY(creator_id) REFERENCES accounts(id) ON DELETE CASCADE
 );
+
+SELECT * FROM restaurants;
