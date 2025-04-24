@@ -42,3 +42,14 @@ DELETE FROM restaurants;
 SELECT * FROM restaurants;
 
 SELECT visits FROM restaurants WHERE id = 4;
+
+
+SELECT
+restaurants.*,
+COUNT(reports.id) AS report_count,
+accounts.*
+FROM restaurants
+INNER JOIN accounts ON accounts.id = restaurants.creator_id
+LEFT OUTER JOIN reports ON reports.restaurant_id = restaurants.id
+GROUP BY restaurants.id
+ORDER BY restaurants.created_at ASC;

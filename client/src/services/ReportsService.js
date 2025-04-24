@@ -8,6 +8,8 @@ class ReportsService {
     const response = await api.post('api/reports', reportData)
     logger.log('CREATED REPORT', response.data)
     const report = new Report(response.data)
+    const restaurant = AppState.restaurants.find(restaurant => restaurant.id == report.restaurantId)
+    restaurant.reportCount++
     if (report.restaurantId != AppState.activeRestaurant?.id) return
     AppState.reports.push(report)
   }

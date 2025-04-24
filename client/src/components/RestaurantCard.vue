@@ -25,7 +25,7 @@ defineProps({
           </div>
           <div>
             <span class="text-green mdi mdi-file-document fs-2"></span>
-            <span><b>0</b> reports</span>
+            <span><b>{{ restaurant.reportCount }}</b> reports</span>
           </div>
         </div>
       </div>
