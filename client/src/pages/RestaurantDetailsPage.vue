@@ -1,5 +1,6 @@
 <script setup>
 import { AppState } from '@/AppState.js';
+import ReportCard from '@/components/ReportCard.vue';
 import { reportsService } from '@/services/ReportsService.js';
 import { restaurantsService } from '@/services/RestaurantsService.js';
 import { logger } from '@/utils/Logger.js';
@@ -9,6 +10,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 const restaurant = computed(() => AppState.activeRestaurant)
 const account = computed(() => AppState.account)
+const reports = computed(() => AppState.reports)
 
 const route = useRoute()
 const router = useRouter()
@@ -95,7 +97,7 @@ async function updateRestaurant() {
                 </div>
                 <div>
                   <span class="text-green mdi mdi-file-document fs-2"></span>
-                  <span><b>0</b> reports</span>
+                  <span><b>{{ reports.length }}</b> reports</span>
                 </div>
               </div>
               <div v-if="restaurant.creatorId == account?.id" class="d-flex gap-2">
@@ -111,6 +113,14 @@ async function updateRestaurant() {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-9">
+        <h2 class="fw-bold my-3 baloo-font">Reports for <span class="text-green">{{ restaurant.name }}</span></h2>
+      </div>
+      <div v-for="report in reports" :key="report.id" class="col-md-9">
+        <ReportCard :report="report" />
       </div>
     </div>
   </div>
