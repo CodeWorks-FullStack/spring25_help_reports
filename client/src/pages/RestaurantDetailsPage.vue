@@ -1,5 +1,6 @@
 <script setup>
 import { AppState } from '@/AppState.js';
+import { reportsService } from '@/services/ReportsService.js';
 import { restaurantsService } from '@/services/RestaurantsService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
@@ -14,6 +15,7 @@ const router = useRouter()
 
 onMounted(() => {
   getRestaurantById()
+  getReportsByRestaurantId()
 })
 
 async function getRestaurantById() {
@@ -23,6 +25,16 @@ async function getRestaurantById() {
     Pop.error(error, "Ain't no restaurant here, pal")
     logger.error(error)
     router.push({ name: 'Home' })
+  }
+}
+
+async function getReportsByRestaurantId() {
+  try {
+    await reportsService.getReportsByRestaurantId(route.params.restaurantId)
+  }
+  catch (error) {
+    Pop.error(error);
+    logger.error(error)
   }
 }
 
@@ -55,6 +67,8 @@ async function updateRestaurant() {
     logger.error(error)
   }
 }
+
+
 </script>
 
 
