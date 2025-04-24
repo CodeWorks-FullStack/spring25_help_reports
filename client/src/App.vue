@@ -1,6 +1,7 @@
 <script setup>
 import { RouterView } from 'vue-router';
 import SideBar from './components/SideBar.vue';
+import ReportModal from './components/ReportModal.vue';
 
 </script>
 
@@ -17,6 +18,7 @@ import SideBar from './components/SideBar.vue';
       </div>
     </div>
   </main>
+  <ReportModal />
 </template>
 
 <style lang="scss"></style>
