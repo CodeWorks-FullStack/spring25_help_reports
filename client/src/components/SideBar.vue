@@ -16,7 +16,8 @@ const account = computed(() => AppState.account)
       </div>
       <p class="fs-3 text-center text-success fw-bold">food reports</p>
     </RouterLink>
-    <button class="btn btn-success w-100 fw-bold fs-3 rounded-0" data-bs-toggle="modal" data-bs-target="#reportModal">
+    <button v-if="account" class="btn btn-success w-100 fw-bold fs-3 rounded-0" data-bs-toggle="modal"
+      data-bs-target="#reportModal">
       Report!
     </button>
     <div class="rounded-top bg-success-subtle">
