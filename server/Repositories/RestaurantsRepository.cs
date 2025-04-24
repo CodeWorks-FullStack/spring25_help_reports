@@ -101,4 +101,19 @@ public class RestaurantsRepository : IRepository<Restaurant>
       throw new Exception(rowsAffected + " ROWS WERE DELETED AND THAT IS NOT GOOD");
     }
   }
+
+  internal void IncreaseVisits(Restaurant restaurant)
+  {
+    string sql = @"
+    UPDATE restaurants
+    SET visits = @Visits
+    WHERE id = @Id LIMIT 1;";
+
+    int rowsAffected = _db.Execute(sql, restaurant);
+
+    if (rowsAffected != 1)
+    {
+      throw new Exception(rowsAffected + " rows were affected and that is bad");
+    }
+  }
 }

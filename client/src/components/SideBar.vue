@@ -20,7 +20,7 @@ const account = computed(() => AppState.account)
       data-bs-target="#reportModal">
       Report!
     </button>
-    <div class="rounded-top bg-success-subtle">
+    <div class="my-3 bg-success-subtle text-center">
       <!-- TODO make this not look like total butt -->
       <Login />
     </div>

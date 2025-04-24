@@ -58,7 +58,7 @@ public class RestaurantsController : ControllerBase
     {
       // NOTE you can still check to see who is logged in without authorizing the route
       Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
-      Restaurant restaurant = _restaurantsService.GetById(restaurantId, userInfo);
+      Restaurant restaurant = _restaurantsService.IncreaseVisits(restaurantId, userInfo);
       return Ok(restaurant);
     }
     catch (Exception exception)

@@ -54,6 +54,22 @@ public class RestaurantsService
     return restaurant;
   }
 
+  internal Restaurant IncreaseVisits(int restaurantId, Account userInfo)
+  {
+    Restaurant restaurant = GetById(restaurantId, userInfo);
+
+    if (restaurant.IsShutdown == true)
+    {
+      return restaurant;
+    }
+
+    restaurant.Visits++;
+
+    _repository.IncreaseVisits(restaurant);
+
+    return restaurant;
+  }
+
   internal Restaurant Update(int restaurantId, Account userInfo, Restaurant restaurantUpdateData)
   {
     Restaurant restaurant = GetById(restaurantId);
