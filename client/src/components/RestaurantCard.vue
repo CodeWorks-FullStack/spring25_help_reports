@@ -57,4 +57,11 @@ defineProps({
   top: 0;
   right: 0;
 }
+
+p {
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
 </style>
