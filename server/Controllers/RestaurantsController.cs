@@ -6,13 +6,15 @@ namespace help.Controllers;
 [Route("api/[controller]")]
 public class RestaurantsController : ControllerBase
 {
-  public RestaurantsController(RestaurantsService restaurantsService, Auth0Provider auth0Provider)
+  public RestaurantsController(RestaurantsService restaurantsService, Auth0Provider auth0Provider, ReportsService reportsService)
   {
     _restaurantsService = restaurantsService;
     _auth0Provider = auth0Provider;
+    _reportsService = reportsService;
   }
   private readonly Auth0Provider _auth0Provider;
   private readonly RestaurantsService _restaurantsService;
+  private readonly ReportsService _reportsService;
 
   [Authorize]
   [HttpPost]
@@ -97,6 +99,21 @@ public class RestaurantsController : ControllerBase
       //   return Forbid();
       // }
 
+      return BadRequest(exception.Message);
+    }
+  }
+
+  [HttpGet("{restaurantId}/reports")]
+  public async Task<ActionResult<List<Report>>> GetReportsByRestaurantId(int restaurantId)
+  {
+    try
+    {
+      Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
+      List<Report> reports = _reportsService.GetReportsByRestaurantId(restaurantId, userInfo);
+      return Ok(reports);
+    }
+    catch (Exception exception)
+    {
       return BadRequest(exception.Message);
     }
   }

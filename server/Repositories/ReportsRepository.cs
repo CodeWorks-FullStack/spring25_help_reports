@@ -51,4 +51,24 @@ public class ReportsRepository : IRepository<Report>
   {
     throw new NotImplementedException();
   }
+
+  internal List<Report> GetReportsByRestaurantId(int restaurantId)
+  {
+    string sql = @"
+    SELECT
+    reports.*,
+    accounts.*
+    FROM reports
+    INNER JOIN accounts ON accounts.id = reports.creator_id
+    WHERE reports.restaurant_id = @restaurantId
+    ORDER BY reports.created_at ASC;";
+
+    List<Report> reports = _db.Query(sql, (Report report, Profile account) =>
+    {
+      report.Reporter = account;
+      return report;
+    }, new { restaurantId }).ToList();
+
+    return reports;
+  }
 }
