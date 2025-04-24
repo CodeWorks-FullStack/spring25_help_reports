@@ -20,7 +20,13 @@ class RestaurantsService {
   async deleteRestaurant(restaurantId) {
     const response = await api.delete(`api/restaurants/${restaurantId}`)
     logger.log('DELETED RESTAURANT', response.data)
+    AppState.activeRestaurant = null
+  }
+
+  async updateRestaurant(restaurantId, updateData) {
+    const response = await api.put(`api/restaurants/${restaurantId}`, updateData)
+    logger.log('UPDATED RESTAURANT', response.data)
+    AppState.activeRestaurant = new Restaurant(response.data)
   }
 }
-
 export const restaurantsService = new RestaurantsService()

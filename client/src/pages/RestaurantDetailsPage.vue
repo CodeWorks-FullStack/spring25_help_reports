@@ -1,6 +1,7 @@
 <script setup>
 import { AppState } from '@/AppState.js';
 import { restaurantsService } from '@/services/RestaurantsService.js';
+import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
 import { computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -20,6 +21,7 @@ async function getRestaurantById() {
     await restaurantsService.getRestaurantById(route.params.restaurantId)
   } catch (error) {
     Pop.error(error, "Ain't no restaurant here, pal")
+    logger.error(error)
     router.push({ name: 'Home' })
   }
 }
@@ -33,6 +35,24 @@ async function deleteRestaurant() {
     router.push({ name: 'Home' })
   } catch (error) {
     Pop.error(error)
+    logger.error(error)
+  }
+}
+
+async function updateRestaurant() {
+  try {
+    const confirmed = await Pop.confirm(`Are you sure you want to ${restaurant.value.isShutdown ? 're-open' : 'shut down'} the ${restaurant.value.name}, dawg?`, '', 'yeah dawg', 'nah dawg')
+
+    if (!confirmed) return
+
+    const updateData = {
+      isShutdown: !restaurant.value.isShutdown
+    }
+
+    await restaurantsService.updateRestaurant(route.params.restaurantId, updateData)
+  } catch (error) {
+    Pop.error(error)
+    logger.error(error)
   }
 }
 </script>
@@ -65,11 +85,11 @@ async function deleteRestaurant() {
                 </div>
               </div>
               <div v-if="restaurant.creatorId == account?.id" class="d-flex gap-2">
-                <button class="btn btn-success fs-5">
+                <button @click="updateRestaurant()" class="btn btn-success fs-5" type="button">
                   <span class="mdi" :class="restaurant.isShutdown ? 'mdi-door-open' : 'mdi-door-closed-cancel'"></span>
                   <span>{{ restaurant.isShutdown ? 'Re-Open' : 'Shutdown' }}</span>
                 </button>
-                <button @click="deleteRestaurant()" class="btn btn-danger fs-5">
+                <button @click="deleteRestaurant()" class="btn btn-danger fs-5" type="button">
                   <span class="mdi mdi-delete-forever"></span>
                   <span>Delete</span>
                 </button>
