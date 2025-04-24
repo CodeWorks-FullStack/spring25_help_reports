@@ -36,5 +36,7 @@ CREATE TABLE reports(
 
 SELECT * FROM reports;
 
+DELETE FROM reports;
+
 DELETE FROM restaurants;
 SELECT * FROM restaurants;

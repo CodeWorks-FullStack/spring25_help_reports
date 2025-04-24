@@ -10,4 +10,5 @@ public class Report : RepoItem<int>
   [Url, MaxLength(1000)] public string ImgUrl { get; set; }
   public string CreatorId { get; set; }
   public int RestaurantId { get; set; }
+  public Profile Reporter { get; set; }
 }
