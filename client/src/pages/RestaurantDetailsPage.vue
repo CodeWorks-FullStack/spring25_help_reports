@@ -23,6 +23,18 @@ async function getRestaurantById() {
     router.push({ name: 'Home' })
   }
 }
+
+async function deleteRestaurant() {
+  try {
+    const confirmed = await Pop.confirm(`Are you sure you want to permanently delete ${restaurant.value.name}, dawg?`, 'You had better be sure, dawg', 'I am sure, dawg', 'Get me outta here, dawg')
+    if (!confirmed) return
+    await restaurantsService.deleteRestaurant(route.params.restaurantId)
+    Pop.success("It's gone, dawg")
+    router.push({ name: 'Home' })
+  } catch (error) {
+    Pop.error(error)
+  }
+}
 </script>
 
 
@@ -57,7 +69,7 @@ async function getRestaurantById() {
                   <span class="mdi" :class="restaurant.isShutdown ? 'mdi-door-open' : 'mdi-door-closed-cancel'"></span>
                   <span>{{ restaurant.isShutdown ? 'Re-Open' : 'Shutdown' }}</span>
                 </button>
-                <button class="btn btn-danger fs-5">
+                <button @click="deleteRestaurant()" class="btn btn-danger fs-5">
                   <span class="mdi mdi-delete-forever"></span>
                   <span>Delete</span>
                 </button>
