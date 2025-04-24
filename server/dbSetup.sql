@@ -40,3 +40,5 @@ DELETE FROM reports;
 
 DELETE FROM restaurants;
 SELECT * FROM restaurants;
+
+SELECT visits FROM restaurants WHERE id = 4;

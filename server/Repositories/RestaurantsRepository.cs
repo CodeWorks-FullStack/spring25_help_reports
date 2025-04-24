@@ -116,4 +116,18 @@ public class RestaurantsRepository : IRepository<Restaurant>
       throw new Exception(rowsAffected + " rows were affected and that is bad");
     }
   }
+
+  internal int IncrementVisits(int restaurantId)
+  {
+    string sql = @"
+    UPDATE restaurants
+    SET visits = visits + 1
+    WHERE id = @restaurantId LIMIT 1;
+    
+    SELECT visits FROM restaurants WHERE id = @restaurantId LIMIT 1;";
+
+    int visits = _db.ExecuteScalar<int>(sql, new { restaurantId });
+
+    return visits;
+  }
 }

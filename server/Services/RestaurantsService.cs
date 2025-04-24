@@ -63,9 +63,11 @@ public class RestaurantsService
       return restaurant;
     }
 
-    restaurant.Visits++;
+    // NOTE this works
+    // restaurant.Visits++;
+    // _repository.IncreaseVisits(restaurant);
 
-    _repository.IncreaseVisits(restaurant);
+    restaurant.Visits = _repository.IncrementVisits(restaurant.Id);
 
     return restaurant;
   }
