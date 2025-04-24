@@ -24,7 +24,7 @@ async function getAllRestaurants() {
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div v-for="restaurant in restaurants" :key="restaurant.id" class="col-md-4">
+      <div v-for="restaurant in restaurants" :key="'home page cards ' + restaurant.id" class="col-md-4">
         <RestaurantCard :restaurant="restaurant" />
       </div>
     </div>

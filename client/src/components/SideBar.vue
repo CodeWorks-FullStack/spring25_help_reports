@@ -8,7 +8,7 @@ const account = computed(() => AppState.account)
 
 
 <template>
-  <aside class="baloo-font">
+  <aside class="baloo-font sticky-top">
     <RouterLink :to="{ name: 'Home' }" title="Go to the home page">
       <div class="bg-success text-light text-center fs-1">
         <p class="fw-bold">HELP</p>

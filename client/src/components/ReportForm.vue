@@ -3,10 +3,23 @@ import { AppState } from '@/AppState.js';
 import { reportsService } from '@/services/ReportsService.js';
 import { logger } from '@/utils/Logger.js';
 import { Pop } from '@/utils/Pop.js';
+import { Modal } from 'bootstrap/dist/js/bootstrap.bundle.js';
 import { computed, ref } from 'vue';
 
 
 const restaurantsThatIDoNotOwn = computed(() => AppState.restaurants.filter(restaurant => restaurant.creatorId != AppState.account?.id))
+
+const restaurantImg = computed(() => {
+  const restaurantId = editableReportData.value.restaurantId
+
+  if (!restaurantId) {
+    return 'https://images.unsplash.com/photo-1686836715835-65af22ea5cd4?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D'
+  }
+
+  const restaurant = restaurantsThatIDoNotOwn.value.find(restaurant => restaurant.id == restaurantId)
+
+  return restaurant.imgUrl
+})
 
 const editableReportData = ref({
   title: '',
@@ -20,6 +33,14 @@ async function createReport() {
   try {
     if (editableReportData.value.imgUrl == '') editableReportData.value.imgUrl = null
     await reportsService.createReport(editableReportData.value)
+    editableReportData.value = {
+      title: '',
+      body: '',
+      score: 3,
+      imgUrl: null,
+      restaurantId: ''
+    }
+    Modal.getOrCreateInstance('#reportModal').hide()
   }
   catch (error) {
     Pop.error(error);
@@ -33,14 +54,15 @@ async function createReport() {
 <template>
   <form @submit.prevent="createReport()" class="baloo-font">
     <div class="mb-3">
+      <label for="report-restaurant-id" class="form-label fw-bold">Select a Restaurant</label>
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-6">
-            <!-- <img src="" alt=""> -->
+            <img :src="restaurantImg" alt="Image of restaurant you are leaving a report for">
           </div>
           <div class="col-md-6">
             <select v-model="editableReportData.restaurantId" class="form-select" aria-label="Select a restaurant"
-              required>
+              required id="report-restaurant-id">
               <option selected disabled value="">Choose a restaurant</option>
               <option v-for="restaurant in restaurantsThatIDoNotOwn" :key="'report form ' + restaurant.id"
                 :value="restaurant.id">
@@ -81,4 +103,10 @@ async function createReport() {
 </template>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+img {
+  height: 10dvh;
+  object-fit: cover;
+  width: 100%;
+}
+</style>
