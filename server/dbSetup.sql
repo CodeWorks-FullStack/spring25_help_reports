@@ -34,5 +34,7 @@ CREATE TABLE reports(
   FOREIGN KEY(restaurant_id) REFERENCES restaurants(id) ON DELETE CASCADE
 );
 
+SELECT * FROM reports;
+
 DELETE FROM restaurants;
 SELECT * FROM restaurants;
