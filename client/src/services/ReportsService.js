@@ -4,6 +4,10 @@ import { AppState } from "@/AppState.js"
 import { Report } from "@/models/Report.js"
 
 class ReportsService {
+  async createReport(reportData) {
+    const response = await api.post('api/reports', reportData)
+    logger.log('CREATED REPORT', response.data)
+  }
   async getReportsByRestaurantId(restaurantId) {
     const response = await api.get(`api/restaurants/${restaurantId}/reports`)
     logger.log('GOT REPORTS', response.data)

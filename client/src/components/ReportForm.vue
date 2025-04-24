@@ -1,5 +1,8 @@
 <script setup>
 import { AppState } from '@/AppState.js';
+import { reportsService } from '@/services/ReportsService.js';
+import { logger } from '@/utils/Logger.js';
+import { Pop } from '@/utils/Pop.js';
 import { computed, ref } from 'vue';
 
 
@@ -9,15 +12,26 @@ const editableReportData = ref({
   title: '',
   body: '',
   score: 3,
-  imgUrl: '',
+  imgUrl: null,
   restaurantId: '' // NOTE this is technically going to be a number
 })
+
+async function createReport() {
+  try {
+    if (editableReportData.value.imgUrl == '') editableReportData.value.imgUrl = null
+    await reportsService.createReport(editableReportData.value)
+  }
+  catch (error) {
+    Pop.error(error);
+    logger.error(error)
+  }
+}
 
 </script>
 
 
 <template>
-  <form class="baloo-font">
+  <form @submit.prevent="createReport()" class="baloo-font">
     <div class="mb-3">
       <div class="container-fluid">
         <div class="row">
