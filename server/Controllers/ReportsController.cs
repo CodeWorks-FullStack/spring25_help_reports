@@ -20,7 +20,7 @@ public class ReportsController : ControllerBase
     {
       Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
       reportData.CreatorId = userInfo.Id;
-      Report report = _reportsService.CreateReport(reportData);
+      Report report = _reportsService.CreateReport(reportData, userInfo);
       return Ok(report);
     }
     catch (Exception exception)
